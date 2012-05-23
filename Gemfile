@@ -24,6 +24,7 @@ gem "mongoid", "~> 2.4"
 gem "bson_ext", "~> 1.5"
 
 group :test, :development do
+  gem 'rspec-rails'
   gem 'pry-rails'
 end
 
@@ -31,7 +32,6 @@ group :test do
   gem 'guard'
   gem 'guard-rspec'
   gem 'guard-spork'
-  gem 'rspec-rails'
   gem 'capybara'
   gem 'factory_girl_rails'
   gem 'database_cleaner'
