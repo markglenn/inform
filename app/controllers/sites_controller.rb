@@ -11,6 +11,10 @@ class SitesController < ApplicationController
     respond_with( @site = Site.find(params[:id]) )
   end
 
+  def near
+    @sites = Site.where( :location.near => [[ params[ :latitude ].to_f, params[ :longitude ].to_f ], 5] )
+  end
+
   # GET /sites/new
   def new
     @site = Site.new

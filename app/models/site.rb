@@ -9,6 +9,8 @@ class Site
   field :description, type: String
   field :location, spacial: true
 
+  spacial_index :location
+
   validates :title, presence: true
   validates :latitude, presence: true
   validates :longitude, presence: true

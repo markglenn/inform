@@ -143,4 +143,22 @@ describe SitesController do
     end
   end
 
+  describe 'near' do
+    it 'should find exact locations' do
+      site = FactoryGirl.create( :site, latitude: 0, longitude: 0 )
+
+      get :near, latitude: 0, longitude: 0
+
+      assigns( :sites ).should == [ site ]
+    end
+
+    it 'should not find something outside of standard radius' do
+      site = FactoryGirl.create( :site, latitude: 0, longitude: 0 )
+
+      get :near, latitude: 100, longitude: 0
+
+      assigns( :sites ).should == [ ]
+
+    end
+  end
 end

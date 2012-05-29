@@ -1,4 +1,6 @@
 Inform::Application.routes.draw do
+
+  match 'sites/near/:latitude,:longitude' => 'sites#near', as: 'near'
   resources :sites
 
   # The priority is based upon order of creation:
