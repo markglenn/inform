@@ -22,9 +22,11 @@ gem 'haml-rails'
 gem 'jquery_mobile_rails', :git => 'https://github.com/hughkelsey/jquery-mobile-rails.git'
 gem "mongoid", "~> 2.4"
 gem "bson_ext", "~> 1.5"
+gem 'mongoid_spacial'
 
 group :test, :development do
   gem 'rspec-rails'
+  gem 'factory_girl_rails'
   gem 'pry-rails'
 end
 
@@ -33,7 +35,6 @@ group :test do
   gem 'guard-rspec'
   gem 'guard-spork'
   gem 'capybara'
-  gem 'factory_girl_rails'
   gem 'database_cleaner'
   gem 'ruby_gntp'
   gem 'steak'
