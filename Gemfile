@@ -23,6 +23,9 @@ gem 'jquery_mobile_rails', :git => 'https://github.com/hughkelsey/jquery-mobile-
 gem "mongoid", "~> 2.4"
 gem "bson_ext", "~> 1.5"
 gem 'mongoid_spacial'
+gem 'gmaps4rails'
+gem 'devise'
+gem 'cancan'
 
 group :test, :development do
   gem 'rspec-rails'

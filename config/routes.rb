@@ -1,7 +1,11 @@
 Inform::Application.routes.draw do
+  DECIMAL_PATTERN = /-?\d+(\.\d+)?/.freeze 
 
-  match 'sites/near/:latitude,:longitude' => 'sites#near', as: 'near'
+  match 'sites/near(/:latitude/:longitude(/:accuracy))' => 'sites#near', as: 'site_near', 
+    constraints: { latitude: DECIMAL_PATTERN, longitude: DECIMAL_PATTERN, accuracy: DECIMAL_PATTERN }
   resources :sites
+
+  devise_for :users
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
