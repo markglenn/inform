@@ -25,6 +25,7 @@ gem "bson_ext", "~> 1.5"
 gem 'mongoid_spacial'
 gem 'devise'
 gem 'cancan'
+gem 'tinymce-rails'
 
 group :test, :development do
   gem 'rspec-rails'

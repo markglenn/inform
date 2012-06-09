@@ -13,7 +13,7 @@
   = @site.longitude
 %p
   %b Description:
-  = @site.description
+  = @site.description.html_safe
 
 = link_to 'Edit', edit_site_path(@site)
 \|
