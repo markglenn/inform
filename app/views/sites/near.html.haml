@@ -21,6 +21,6 @@
 %br
 
 = gmaps( markers: { data: @sites.to_gmaps4rails }, 
-  map_options: { center_longitude: params[ :longitude ], center_latitude: params[ :latitude ], auto_adjust: true, zoom: 15 })
+  map_options: { center_longitude: params[ :longitude ], center_latitude: params[ :latitude ], zoom: 8 })
 
 = link_to 'New Site', new_site_path

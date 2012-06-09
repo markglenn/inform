@@ -1,5 +1,7 @@
 %p#notice= notice
 
+#map_canvas{ data: { lat: @site.latitude, lng: @site.longitude, withmarker: 'true', editable: 'false' } }
+
 %p
   %b Title:
   = @site.title
