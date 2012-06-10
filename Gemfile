@@ -19,7 +19,6 @@ end
 
 gem 'jquery-rails'
 gem 'haml-rails'
-gem 'jquery_mobile_rails', :git => 'https://github.com/hughkelsey/jquery-mobile-rails.git'
 gem "mongoid", "~> 2.4"
 gem "bson_ext", "~> 1.5"
 gem 'mongoid_spacial'
@@ -32,6 +31,7 @@ group :test, :development do
   gem 'factory_girl_rails'
   gem 'pry-rails'
   gem 'awesome_print'
+  gem 'guard-pow'
 end
 
 group :test do

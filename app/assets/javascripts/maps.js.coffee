@@ -1,10 +1,16 @@
-addMarker = ( location, moveable = true ) ->
-  marker = $('#map_canvas').data( 'marker' )
-  marker.setMap( null ) if marker
-
+setLocation = ( location ) ->
+  # Set the textbox values to the location
   $('#site_latitude').val location.lat()
   $('#site_longitude').val location.lng()
 
+addMarker = ( location, moveable = true ) ->
+  # Clear any previous marker
+  marker = $('#map_canvas').data( 'marker' )
+  marker.setMap( null ) if marker
+
+  setLocation( location )
+
+  # Add a marker to the map
   $('#map_canvas').data( 
     'marker'
     new google.maps.Marker
@@ -14,37 +20,51 @@ addMarker = ( location, moveable = true ) ->
       animation: google.maps.Animation.DROP
   )
 
+  # Add drag event if the marker is movable
   if moveable
-    google.maps.event.addListener( $('#map_canvas').data('marker'), "dragend", (event) ->
-      $('#site_latitude').val( event.latLng.lat() )
-      $('#site_longitude').val( event.latLng.lng() )
+    google.maps.event.addListener( 
+      $('#map_canvas').data('marker')
+      "dragend"
+      (event) -> setLocation event.latLng
     )
 
 mapInitialize = ->
-  lat = $('#map_canvas').data('lat')
-  lng = $('#map_canvas').data('lng')
+  # Get starting location
+  location = new google.maps.LatLng( 
+    $('#map_canvas').data('lat')
+    $('#map_canvas').data('lng')
+  )
   hasMarker = $('#map_canvas').data('withmarker')
   editable = $('#map_canvas').data('editable')
 
+  # Google Maps options
   mapOptions = 
-    center: new google.maps.LatLng(lat,lng)
+    center: location
     zoom: if hasMarker then 16 else 12 
     mapTypeId: google.maps.MapTypeId.ROADMAP
 
-  $('#map_canvas').data('map', new google.maps.Map( 
-    document.getElementById( 'map_canvas' )
-    mapOptions 
-  ))
+  # Create the map
+  $('#map_canvas').data(
+    'map'
+    new google.maps.Map( 
+      document.getElementById( 'map_canvas' )
+      mapOptions 
+    )
+  )
 
+  # Add a right click event to add a marker
   if editable
-    google.maps.event.addListener($('#map_canvas').data('map'), "rightclick", (event) ->
-      addMarker event.latLng
+    google.maps.event.addListener(
+      $('#map_canvas').data('map')
+      "rightclick" 
+      (event) -> addMarker event.latLng
     )
 
-  addMarker( new google.maps.LatLng(lat,lng), editable ) if hasMarker
+  # Add a marker if requested
+  addMarker( location, editable ) if hasMarker
 
 $ ->
-  mapInitialize( )
+  mapInitialize( ) if $('#map_canvas').length > 0
 
   $('#map-search').submit ->
     geocoder = new google.maps.Geocoder()
@@ -60,4 +80,5 @@ $ ->
           addMarker results[ 0 ].geometry.location
     )
 
+    # Don't actually submit
     false
