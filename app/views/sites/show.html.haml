@@ -1,16 +1,10 @@
 %p#notice= notice
 
-#map_canvas{ data: { lat: @site.latitude, lng: @site.longitude, withmarker: 'true', editable: 'false' } }
+#map_canvas{ data: { locations: site_locations_array( [@site] ), withmarker: 'true', editable: 'false' } }
 
 %p
   %b Title:
   = @site.title
-%p
-  %b Latitude:
-  = @site.latitude
-%p
-  %b Longitude:
-  = @site.longitude
 %p
   %b Description:
   = @site.description.html_safe

@@ -18,6 +18,8 @@ class SitesController < ApplicationController
       max: [ params[ :accuracy ].to_f, 1600 ].max, 
       unit: :m 
     } )
+
+    render action: :index
   end
 
   # GET /sites/new

@@ -11,4 +11,10 @@ require 'spec_helper'
 #   end
 # end
 describe SitesHelper do
+  describe 'site_locations_array' do
+    it 'should return location for site' do
+      site = FactoryGirl.create( :site, latitude: 1, longitude: 2 )
+      helper.site_locations_array([ site ]).should == "[[1,2]]"
+    end
+  end
 end

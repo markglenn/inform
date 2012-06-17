@@ -1,5 +1,7 @@
 %h1 Listing sites
 
+#map_canvas{ data: { locations: site_locations_array( @sites ), withmarker: 'true', editable: 'false' } }
+
 = link_to 'Near Me', site_near_url, id: 'near-me-link'
 
 %table
