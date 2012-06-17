@@ -5,22 +5,9 @@
 = link_to 'Near Me', site_near_url, id: 'near-me-link'
 
 - if params[ :latitude ]
-  = link_to 'All Sites', sites_path
+  = button_to 'All Sites', sites_path
 
-%table
-  %tr
-    %th Title
-    %th
-    %th
-    %th
-
-  - @sites.each do |site|
-    %tr
-      %td= site.title
-      %td= link_to 'Show', site
-      %td= link_to 'Edit', edit_site_path(site)
-      %td= link_to 'Destroy', site, :confirm => 'Are you sure?', :method => :delete
-
-%br
+- @sites.each do |site|
+  %h2= link_to site.title, site
 
 = link_to 'New Site', new_site_path

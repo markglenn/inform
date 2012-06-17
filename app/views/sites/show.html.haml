@@ -1,14 +1,14 @@
 %p#notice= notice
 
+%h1= @site.title
+
 = map_canvas( [@site], false )
 
 %p
-  %b Title:
-  = @site.title
-%p
-  %b Description:
   = @site.description.html_safe
 
 = link_to 'Edit', edit_site_path(@site)
+\|
+= link_to 'Destroy', @site, :confirm => 'Are you sure?', :method => :delete
 \|
 = link_to 'Back', sites_path
