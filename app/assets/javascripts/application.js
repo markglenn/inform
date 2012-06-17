@@ -13,4 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require tinymce-jquery
-//= require_tree .
+//= require maps
+//= require sites
+//= require jquery.ui.map.min
+//= require jquery.ui.map.services.min
