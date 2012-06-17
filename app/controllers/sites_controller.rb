@@ -1,5 +1,6 @@
 class SitesController < ApplicationController
   respond_to :html
+  before_filter :authenticate_user!, only: [ :edit, :create, :new ]
 
   # GET /sites
   def index

@@ -39,17 +39,18 @@ $ ->
   $.each locations, ( i, location ) -> 
     addMarker location, locations.length > 1, moveable
 
+  # Map search form
   $('#map-search').submit ->
-    contents = $( '#map-search-box' ).val( )
 
     $('#map_canvas').gmap( 'search'
       address: $( '#map-search-box' ).val( )
       ( results, status ) -> 
-        if status == 'OK'
-          location = results[ 0 ].geometry.location
-          $('#map_canvas').gmap('get', 'map').panTo location
-          setLocation location
-          addMarker [ location.lat(), location.lng() ], false, true
+        return unless status == 'OK'
+
+        location = results[ 0 ].geometry.location
+        $('#map_canvas').gmap('get', 'map').panTo location
+        setLocation location
+        addMarker [ location.lat(), location.lng() ], false, true
     )
 
     # Don't actually submit
