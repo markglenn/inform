@@ -22,18 +22,22 @@ addMarker = ( location, bounds = false, moveable = false ) ->
 
 $ ->
   map = $('#map_canvas')
+
+  # Set some values and defaults from the data attributes
   locations = map.data('locations') || []
-  moveable = map.data('editable') || false
+  moveable  = map.data('editable') || false
+  center    = map.data( 'current-location' ) || if locations.length > 0 then locations[ 0 ] else [42,-88]
+  zoom      = if map.data('current-location') then 13 else 16
 
   map.gmap(
-    center: if locations.length > 0 then locations[ 0 ].join() else '42,-88'
-    zoom: if map.data('withmarker') then 16 else 12
+    center: center.join()
+    zoom: zoom
     mapTypeId: google.maps.MapTypeId.ROADMAP
   )
 
-  if map.data( 'withmarker' )
-    $.each locations, ( i, location ) -> 
-      addMarker location, locations.length > 1, moveable
+  # Add markers
+  $.each locations, ( i, location ) -> 
+    addMarker location, locations.length > 1, moveable
 
   $('#map-search').submit ->
     contents = $( '#map-search-box' ).val( )

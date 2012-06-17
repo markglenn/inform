@@ -1,8 +1,11 @@
 %h1 Listing sites
 
-#map_canvas{ data: { locations: site_locations_array( @sites ), withmarker: 'true', editable: 'false' } }
+= map_canvas( @sites, false, params[ :latitude ], params[ :longitude ] )
 
 = link_to 'Near Me', site_near_url, id: 'near-me-link'
+
+- if params[ :latitude ]
+  = link_to 'All Sites', sites_path
 
 %table
   %tr

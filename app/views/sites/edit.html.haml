@@ -1,5 +1,9 @@
 %h1 Editing site
 
+%form{ action: '#', id: 'map-search' }
+  = text_field_tag 'map-search-box'
+  = submit_tag 'Search'
+
 #map_canvas{ data: { locations: site_locations_array([@site]), withmarker: 'true', editable: 'true' } }
 = render 'form'
 
