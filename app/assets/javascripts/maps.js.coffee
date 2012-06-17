@@ -22,11 +22,11 @@ addMarker = ( location, bounds = false, moveable = false ) ->
 
 $ ->
   map = $('#map_canvas')
-  locations = map.data('locations')
+  locations = map.data('locations') || []
   moveable = map.data('editable') || false
 
   map.gmap(
-    center: if locations then locations[ 0 ].join() else '42,-88'
+    center: if locations.length > 0 then locations[ 0 ].join() else '42,-88'
     zoom: if map.data('withmarker') then 16 else 12
     mapTypeId: google.maps.MapTypeId.ROADMAP
   )
