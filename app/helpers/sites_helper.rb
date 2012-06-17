@@ -1,5 +1,7 @@
 module SitesHelper
   def site_locations_array( sites )
+    sites = [ sites ] unless sites.is_a? Enumerable
+
     sites.map{ |s| [ s.latitude, s.longitude ] }.to_json
   end
 

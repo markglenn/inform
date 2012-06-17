@@ -4,7 +4,8 @@
   = text_field_tag 'map-search-box'
   = submit_tag 'Search'
 
-#map_canvas{ data: { lat: '-34.397', lng: '150.644', editable: 'true' } }
+= map_canvas( [], true )
+
 = render 'form'
 
 = link_to 'Back', sites_path

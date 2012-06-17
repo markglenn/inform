@@ -5,7 +5,7 @@
 = link_to 'Near Me', site_near_url, id: 'near-me-link'
 
 - if params[ :latitude ]
-  = button_to 'All Sites', sites_path
+  = link_to 'All Sites', sites_path
 
 - @sites.each do |site|
   %h2= link_to site.title, site
