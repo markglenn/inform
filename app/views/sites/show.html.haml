@@ -1,0 +1,14 @@
+%p#notice= notice
+
+#map_canvas{ data: { locations: site_locations_array( [@site] ), withmarker: 'true', editable: 'false' } }
+
+%p
+  %b Title:
+  = @site.title
+%p
+  %b Description:
+  = @site.description.html_safe
+
+= link_to 'Edit', edit_site_path(@site)
+\|
+= link_to 'Back', sites_path

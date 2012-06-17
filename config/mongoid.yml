@@ -1,18 +1,22 @@
 development:
   host: localhost
   database: inform_development
+  allow_dynamic_fields: false
 
 test:
   host: localhost
   database: inform_test
+  allow_dynamic_fields: false
 
 # set these environment variables on your prod server
 production:
-  host: <%= ENV['MONGOID_HOST'] %>
-  port: <%= ENV['MONGOID_PORT'] %>
-  username: <%= ENV['MONGOID_USERNAME'] %>
-  password: <%= ENV['MONGOID_PASSWORD'] %>
-  database: <%= ENV['MONGOID_DATABASE'] %>
+  uri: <%= ENV['MONGOHQ_URL'] %>
+  #host: <%= ENV['MONGOID_HOST'] %>
+  #port: <%= ENV['MONGOID_PORT'] %>
+  #username: <%= ENV['MONGOID_USERNAME'] %>
+  #password: <%= ENV['MONGOID_PASSWORD'] %>
+  #database: <%= ENV['MONGOID_DATABASE'] %>
+  #allow_dynamic_fields: false
   # slaves:
   #   - host: slave1.local
   #     port: 27018

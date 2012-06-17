@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.3'
+gem 'rails', '3.2.5'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -19,21 +19,26 @@ end
 
 gem 'jquery-rails'
 gem 'haml-rails'
-gem 'jquery_mobile_rails', :git => 'https://github.com/hughkelsey/jquery-mobile-rails.git'
 gem "mongoid", "~> 2.4"
 gem "bson_ext", "~> 1.5"
+gem 'mongoid_spacial'
+gem 'devise'
+gem 'cancan'
+gem 'tinymce-rails'
 
 group :test, :development do
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
   gem 'pry-rails'
+  gem 'awesome_print'
+  gem 'guard-pow'
 end
 
 group :test do
   gem 'guard'
   gem 'guard-rspec'
   gem 'guard-spork'
-  gem 'rspec-rails'
   gem 'capybara'
-  gem 'factory_girl_rails'
   gem 'database_cleaner'
   gem 'ruby_gntp'
   gem 'steak'

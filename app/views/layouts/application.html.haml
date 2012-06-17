@@ -1,0 +1,12 @@
+!!! 5
+%html
+  %head
+    %title Inform
+    = stylesheet_link_tag    "application", :media => "all"
+    = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyDPE4JHp_V_12lo7-21kmlmlOGZUt9050c&sensor=false"
+    = javascript_include_tag "application"
+    = javascript_include_tag "jquery.ui.map.min"
+    = javascript_include_tag "jquery.ui.map.services.min"
+    = csrf_meta_tags
+
+  %body= yield

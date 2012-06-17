@@ -1,0 +1,8 @@
+%h1 Editing site
+
+#map_canvas{ data: { locations: site_locations_array([@site]), withmarker: 'true', editable: 'true' } }
+= render 'form'
+
+= link_to 'Show', @site
+\|
+= link_to 'Back', sites_path
