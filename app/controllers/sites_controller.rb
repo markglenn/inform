@@ -20,7 +20,11 @@ class SitesController < ApplicationController
       unit: :m 
     } )
 
-    render action: :index
+    if @sites.count == 1
+      redirect_to @sites.first
+    else
+      render action: :index
+    end
   end
 
   # GET /sites/new

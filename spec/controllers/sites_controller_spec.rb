@@ -180,13 +180,14 @@ describe SitesController do
     end
   end
 
-  describe 'near' do
+  describe 'GET near' do
     it 'should find exact locations' do
-      site = FactoryGirl.create( :site, latitude: 0, longitude: 0 )
+      site1 = FactoryGirl.create( :site, latitude: 0, longitude: 0 )
+      site2 = FactoryGirl.create( :site, latitude: 0, longitude: 0 )
 
       get :near, latitude: 0, longitude: 0
 
-      assigns( :sites ).should == [ site ]
+      assigns( :sites ).to_a.should =~ [ site1, site2 ]
     end
 
     it 'should not find something outside of standard radius' do
@@ -195,7 +196,13 @@ describe SitesController do
       get :near, latitude: 100, longitude: 0
 
       assigns( :sites ).should == [ ]
+    end
 
+    it 'should redirect to site if only one found' do
+      site = FactoryGirl.create( :site, latitude: 0, longitude: 0 )
+      get :near, latitude: 0, longitude: 0
+
+      response.should redirect_to site
     end
   end
 end

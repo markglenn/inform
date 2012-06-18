@@ -1,4 +1,6 @@
 Inform::Application.routes.draw do
+  resources :organizations
+
   DECIMAL_PATTERN = /-?\d+(\.\d+)?/.freeze 
 
   match 'sites/near(/:latitude/:longitude(/:accuracy))' => 'sites#near', as: 'site_near', 
