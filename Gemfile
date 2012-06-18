@@ -25,6 +25,7 @@ gem 'mongoid_spacial'
 gem 'devise'
 gem 'cancan'
 gem 'tinymce-rails'
+gem 'dalli'
 
 group :test, :development do
   gem 'rspec-rails'
