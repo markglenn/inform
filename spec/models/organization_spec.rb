@@ -25,4 +25,19 @@ describe Organization do
       @organization.should_not be_valid
     end
   end
+
+  describe 'organization_users' do
+    before :each do
+      @organization = FactoryGirl.build( :organization )
+    end
+
+    it 'should embed organization user' do
+      organization_user = FactoryGirl.build( :organization_user )
+
+      @organization.organization_users << organization_user
+      @organization.save
+
+      Organization.first.organization_users.should =~ [ organization_user ]
+    end
+  end
 end

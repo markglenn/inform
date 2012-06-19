@@ -7,6 +7,15 @@
   %b Description:
   = @organization.description
 
+%p
+  %b Users
+
+  %ul
+    - @organization.organization_users.each do |u|
+      %li
+        = u.user.email
+        [ #{u.roles.join( ',' )} ]
+
 = link_to 'Edit', edit_organization_path(@organization)
 \|
 = link_to 'Back', organizations_path

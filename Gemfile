@@ -26,6 +26,7 @@ gem 'devise'
 gem 'cancan'
 gem 'tinymce-rails'
 gem 'dalli'
+gem 'mobylette'
 
 group :test, :development do
   gem 'rspec-rails'

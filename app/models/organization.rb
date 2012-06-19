@@ -1,6 +1,8 @@
 class Organization
   include Mongoid::Document
 
+  embeds_many :organization_users
+
   field :name,        type: String
   field :description, type: String
 
