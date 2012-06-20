@@ -29,7 +29,7 @@ describe Site do
   describe 'latitude/longitude' do
     it 'should set location data on save' do
       site = FactoryGirl.create( :site, latitude: 123, longitude: 45 )
-      site.location.should == { lng: 45, lat: 123 }
+      site.location.should =~ [ 45, 123 ]
     end
 
     it 'should set latitude and longitude on load' do

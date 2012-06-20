@@ -8,4 +8,17 @@
     = csrf_meta_tags
 
     %meta{ name: 'viewport', content: 'width=device-width; initial-scale=1.0; maximum-scale=1.0;' }
-  %body= yield
+  %body
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          = link_to 'Inform', root_path, class: 'brand'
+
+          .nav-collapse
+            %ul.nav
+              %li= link_to 'Home', root_path
+              %li= link_to 'Sites', sites_path
+              %li= link_to 'Organization', organizations_path
+
+    .container
+      = yield

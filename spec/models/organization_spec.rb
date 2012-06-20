@@ -40,4 +40,24 @@ describe Organization do
       Organization.first.organization_users.should =~ [ organization_user ]
     end
   end
+
+  describe 'for_user' do
+    before :each do
+      @user = FactoryGirl.create( :user )
+    end
+
+    it 'should return all organizations for a user' do
+      ou = FactoryGirl.build( :organization_user, user: @user )
+      organization = FactoryGirl.create( :organization, organization_users: [ ou ] )
+
+      Organization.for_user( @user ).to_a.should =~ [ organization ]
+    end
+
+    it 'should not return organizations for which the user is not assigned' do
+      organization = FactoryGirl.create( :organization )
+
+      Organization.for_user( @user ).should be_empty
+    end
+
+  end
 end

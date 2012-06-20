@@ -21,7 +21,6 @@ gem 'jquery-rails'
 gem 'haml-rails'
 gem "mongoid", "~> 2.4"
 gem "bson_ext", "~> 1.5"
-gem 'mongoid_spacial'
 gem 'devise'
 gem 'cancan'
 gem 'tinymce-rails'

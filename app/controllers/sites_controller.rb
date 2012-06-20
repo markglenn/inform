@@ -14,11 +14,12 @@ class SitesController < ApplicationController
 
   # GET /sites/near/:latitude/:longitude/:accuracy
   def near
-    @sites = Site.where( :location.near => {
-      point: [ params[ :longitude ].to_f, params[ :latitude ].to_f ], 
-      max: [ params[ :accuracy ].to_f, 1600 ].max, 
-      unit: :m 
-    } )
+    location = [ params[ :longitude ].to_f, params[ :latitude ].to_f ]
+
+    # Distance to degrees: ( distance in meters ) / 1000 / 111.2
+    distance = [ params[ :accuracy ].to_f, 1600 ].max.fdiv( 1000.0 ).fdiv( 111.12 )
+
+    @sites = Site.where( :location => { '$near' => location, '$maxDistance' => distance } )
 
     if @sites.count == 1
       redirect_to @sites.first
