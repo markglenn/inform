@@ -7,11 +7,13 @@ FactoryGirl.define do
     
     factory :organization_with_user do
       ignore do
-        user
+        user { FactoryGirl.create( :user ) }
+        roles []
       end
 
       after( :create ) do |organization, evaluator|
-        #FactoryGirl.create_list( :user_organization, 1, user: evaluator.user )
+        organization.organization_users = [FactoryGirl.build( :organization_user, user: evaluator.user, roles: evaluator.roles )]
+        organization.save!
       end
     end
   end

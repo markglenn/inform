@@ -15,4 +15,8 @@ class Organization
   def self.for_user( user )
     where( organization_users: { '$elemMatch' => { user_id: user.id } } )
   end
+
+  def roles_for_user( user )
+    organization_users.select{|ou| ou.user_id == user.id }.map{|ou| ou.roles}.flatten
+  end
 end
