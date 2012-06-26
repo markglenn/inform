@@ -1,22 +1,21 @@
 %p#notice= notice
 
-%p
-  %b Name:
-  = @organization.name
-%p
-  %b Description:
-  = @organization.description
+%h1= @organization.name
 
-%p
-  %b Users
+- unless @organization.description.blank?
+  .row= @organization.description
 
-  %ul
-    - @organization.organization_users.each do |u|
-      %li
-        %strong= u.user.email
+%h3 Users
 
-        - unless u.roles.blank?
-          [ #{u.roles.join(', ')} ]
+%table.table.table-striped
+  %tr
+    %th Email Address
+    %th Roles
+
+  - @organization.organization_users.each do |u|
+    %tr
+      %td= u.user.email
+      %td= u.roles.blank? ? '' : u.roles.join(', ')
 
 = link_to 'Edit', edit_organization_path(@organization)
 \|
