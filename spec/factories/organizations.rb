@@ -12,7 +12,7 @@ FactoryGirl.define do
       end
 
       after( :create ) do |organization, evaluator|
-        organization.organization_users = [FactoryGirl.build( :organization_user, user: evaluator.user, roles: evaluator.roles )]
+        organization.organization_users = FactoryGirl.build_list( :organization_user, 1, user: evaluator.user, roles: evaluator.roles )
         organization.save!
       end
     end

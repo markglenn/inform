@@ -75,5 +75,10 @@ describe Organization do
       organization = FactoryGirl.create( :organization_with_user, user: @user, roles: [ 'Admin', 'User' ] )
       organization.roles_for_user( @user ).should =~ %w( Admin User )
     end
+
+    it 'should return nil for users not in organization' do
+      organization = FactoryGirl.create( :organization )
+      organization.roles_for_user( @user ).should be_nil
+    end
   end
 end
