@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'Site browsing', js: true, slow: true do
+feature 'Site browsing', slow: true do
   background do
     @site = FactoryGirl.create( :site )
   end

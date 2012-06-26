@@ -17,3 +17,4 @@
 //= require sites
 //= require jquery.ui.map.min
 //= require jquery.ui.map.services.min
+//= require bootstrap
