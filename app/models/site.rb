@@ -15,13 +15,13 @@ class Site
   validates :longitude, presence: true
 
   set_callback(:validation, :before) do |document|
-    document.location = [ document.latitude.to_f, document.longitude.to_f ]
+    document.location = [ document.longitude.to_f, document.latitude.to_f ]
   end
 
   set_callback(:initialize, :after) do |document|
     if document.location and document.latitude.blank? and document.longitude.blank?
-      document.latitude = document.location[ 0 ].to_f
-      document.longitude = document.location[ 1 ].to_f
+      document.longitude = document.location[ 0 ].to_f
+      document.latitude = document.location[ 1 ].to_f
     end
   end
 end

@@ -60,4 +60,14 @@ describe Organization do
     end
 
   end
+
+  describe 'roles' do
+    before :each do
+      @user = FactoryGirl.create( :user )
+    end
+
+    it 'should return roles for user' do
+      organization = FactoryGirl.create( :organization_with_user, user: @user )
+    end
+  end
 end

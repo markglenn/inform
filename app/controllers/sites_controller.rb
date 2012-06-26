@@ -16,10 +16,10 @@ class SitesController < ApplicationController
   def near
     location = [ params[ :longitude ].to_f, params[ :latitude ].to_f ]
 
-    # Distance to degrees: ( distance in meters ) / 1000 / 111.2
-    distance = [ params[ :accuracy ].to_f, 1600 ].max.fdiv( 1000.0 ).fdiv( 111.12 )
+    # Meters to degrees: ( distance in meters ) / 1000 / 111.2
+    distance = [ params[ :accuracy ].to_f, 1600 ].min.fdiv( 1000.0 ).fdiv( 111.12 )
 
-    @sites = Site.where( :location => { '$near' => location, '$maxDistance' => distance } )
+    @sites = Site.where( :location => { '$nearSphere' => location, '$maxDistance' => distance } )
 
     if @sites.count == 1
       redirect_to @sites.first

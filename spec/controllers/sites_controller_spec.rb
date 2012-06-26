@@ -193,7 +193,7 @@ describe SitesController do
     it 'should not find something outside of standard radius' do
       site = FactoryGirl.create( :site, latitude: 0, longitude: 0 )
 
-      get :near, latitude: 100, longitude: 0
+      get :near, latitude: 50, longitude: 0
 
       assigns( :sites ).should == [ ]
     end

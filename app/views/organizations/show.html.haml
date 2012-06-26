@@ -13,8 +13,10 @@
   %ul
     - @organization.organization_users.each do |u|
       %li
-        = u.user.email
-        [ #{u.roles.join( ',' )} ]
+        %strong= u.user.email
+
+        - unless u.roles.blank?
+          [ #{u.roles.join(', ')} ]
 
 = link_to 'Edit', edit_organization_path(@organization)
 \|
