@@ -1,0 +1,22 @@
+= form_for [@organization, @organization_user] do |f|
+  -if @organization_user.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@organization_user.errors.count, "error")} prohibited this organization user from being saved:"
+      %ul
+        - @organization_user.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = label_tag :email
+    = text_field_tag :email, @organization_user.user.email
+
+  %h2 Roles
+
+  %ul
+    - RoleConstants::ORGANIZATION_ROLES.each do |role|
+      %li
+        = check_box_tag 'roles[]', role, @organization_user.roles.include?( role )
+        = label_tag :roles, role
+
+  .actions
+    = f.submit 'Save'

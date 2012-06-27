@@ -1,5 +1,8 @@
+require 'role_constants'
+
 class OrganizationUser
   include Mongoid::Document
+  include RoleConstants
 
   embedded_in :organization
 

@@ -11,11 +11,13 @@
   %tr
     %th Email Address
     %th Roles
+    %th
 
   - @organization.organization_users.each do |u|
     %tr
       %td= u.user.email
       %td= u.roles.blank? ? '' : u.roles.join(', ')
+      %td= link_to 'Edit', edit_organization_organization_user_path(@organization, u), class: 'btn btn-small'
 
 = link_to 'Edit', edit_organization_path(@organization)
 \|

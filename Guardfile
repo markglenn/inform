@@ -10,7 +10,21 @@ guard 'spork', :cucumber_env => { 'RAILS_ENV' => 'test' }, :rspec_env => { 'RAIL
   watch('Gemfile.lock')
   watch('spec/spec_helper.rb') { :rspec }
   watch('test/test_helper.rb') { :test_unit }
+  watch('config/routes.rb')
   watch(%r{features/support/}) { :cucumber }
+end
+
+guard 'pow' do
+  watch('.powrc')
+  watch('.powenv')
+  watch('.rvmrc')
+  watch('Gemfile')
+  watch('Gemfile.lock')
+  watch('config/application.rb')
+  watch('config/environment.rb')
+  watch('config/routes.rb')
+  watch(%r{^config/environments/.*\.rb$})
+  watch(%r{^config/initializers/.*\.rb$})
 end
 
 guard 'rspec', :cli => "--color --drb --tag ~slow", :version => 2 do
@@ -27,17 +41,4 @@ guard 'rspec', :cli => "--color --drb --tag ~slow", :version => 2 do
   watch('app/controllers/application_controller.rb')  { "spec/controllers" }
   # Capybara request specs
   watch(%r{^app/views/(.+)/.*\.(erb|haml)$})          { |m| "spec/requests/#{m[1]}_spec.rb" }
-end
-
-guard 'pow' do
-  watch('.powrc')
-  watch('.powenv')
-  watch('.rvmrc')
-  watch('Gemfile')
-  watch('Gemfile.lock')
-  watch('config/application.rb')
-  watch('config/environment.rb')
-  watch('config/routes.rb')
-  watch(%r{^config/environments/.*\.rb$})
-  watch(%r{^config/initializers/.*\.rb$})
 end
