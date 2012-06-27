@@ -14,7 +14,8 @@ class Organization
 
   # Find organizations that have a user
   def self.for_user( user )
-    where( organization_users: { '$elemMatch' => { user_id: user.id } } )
+    user_id = user.is_a?( User ) ? user.id : BSON::ObjectId( user )
+    where( organization_users: { '$elemMatch' => { 'user_id' => user_id } } )
   end
 
   # Returns roles for a particular user

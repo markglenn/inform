@@ -59,6 +59,13 @@ describe Organization do
       Organization.for_user( @user ).should be_empty
     end
 
+    it 'should return organizations that have the user id' do
+      ou = FactoryGirl.build( :organization_user, user: @user )
+      organization = FactoryGirl.create( :organization, organization_users: [ ou ] )
+
+      Organization.for_user( @user.id.to_s ).to_a.should =~ [ organization ]
+    end
+
   end
 
   describe 'roles_for_user' do
