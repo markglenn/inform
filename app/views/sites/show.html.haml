@@ -1,14 +1,19 @@
-%p#notice= notice
+/%p#notice= notice
 
-%h1= @site.title
+.page-header
+  %h1= @site.title
 
 = map_canvas( @site, false )
 
 %p
   = @site.description.html_safe
 
-= link_to 'Edit', edit_site_path(@site)
-\|
-= link_to 'Destroy', @site, :confirm => 'Are you sure?', :method => :delete
-\|
-= link_to 'Back', sites_path
+.btn-group
+  = link_to edit_site_path(@site), class: 'btn' do
+    %i.icon-edit
+    Edit
+  = link_to @site, confirm: 'Are you sure?', method: :delete, class: 'btn btn-danger' do
+    %i.icon-trash.icon-white
+    Delete
+  = link_to sites_path, class: 'btn' do
+    Back

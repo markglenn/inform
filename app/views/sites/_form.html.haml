@@ -1,25 +1,37 @@
-= form_for @site do |f|
-  -if @site.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@site.errors.count, "error")} prohibited this site from being saved:"
-      %ul
-        - @site.errors.full_messages.each do |msg|
-          %li= msg
+- sites = @site.new_record? ? [] : [ @site ]
 
-  .field
-    = f.label :title
-    = f.text_field :title
+-if @site.errors.any?
+  .row
+    .alert.alert-error.span8.offset2
+      %i.icon-exclamation-sign
+      %strong Oops!
+      There are some errors with your site.
 
-  .field
-    = f.label :latitude
-    = f.text_field :latitude
-  .field
-    = f.label :longitude
-    = f.text_field :longitude
-  .field
-    = f.label :description
-    = f.text_area :description, class: 'tinymce'
-  .actions
-    = f.submit 'Save'
+      %ul.error-list
+        - @site.errors.full_messages.each do |message|
+          %li= message
+        
 
+%form.form-search.well{ action: '#', id: 'map-search' }
+  %fieldset
+    %legend Find location
+    .control-group
+      .input-prepend<
+        %span.add-on
+          %i.icon-search
+        = text_field_tag 'map-search-box', '', class: 'search-query span8'
+      = submit_tag 'Search', class: 'btn'
+
+      %p= map_canvas( sites, true )
+
+= simple_form_for @site, html: { class: 'form-horizontal' } do |f|
+
+  = f.input :title, input_html: { class: 'span6' }
+  = f.input :latitude, input_html: { class: 'span6' }
+  = f.input :longitude, input_html: { class: 'span6' }
+  = f.input :description, as: :text, input_html: { class: 'tinymce' }
+
+  .form-actions
+    = f.submit 'Save Site', class: 'btn btn-primary'
+  
   = tinymce
