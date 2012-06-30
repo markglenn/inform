@@ -2,7 +2,7 @@ Inform::Application.routes.draw do
   get "organization_users/destroy"
 
   resources :organizations do
-    resources :organization_users, only: [ :index, :edit, :update ]
+    resources :organization_users, path: 'users'
   end
 
   DECIMAL_PATTERN = /-?\d+(\.\d+)?/.freeze 

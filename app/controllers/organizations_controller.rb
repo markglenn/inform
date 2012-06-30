@@ -54,5 +54,4 @@ class OrganizationsController < ApplicationController
 
     respond_with @organization
   end
-
 end

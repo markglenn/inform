@@ -15,4 +15,52 @@ describe OrganizationUser do
       @organization_user.should_not be_valid
     end
   end
+
+  describe 'email' do
+    before :each do
+      @organization = FactoryGirl.create( :organization_with_user )
+    end
+
+    it 'should set email on initialize' do
+      @organization.reload
+      @organization.organization_users.first.email.should == @organization.organization_users.first.user.email
+    end
+
+    it 'should find user by email on save' do
+      user = FactoryGirl.create( :user )
+      org_user = @organization.organization_users.first
+      
+      org_user.email = user.email
+      @organization.save
+
+      @organization.organization_users.first.user.should == user
+    end
+
+    it 'should not change user if set directly' do
+      user1, user2 = FactoryGirl.create_list( :user, 2 )
+      org_user = @organization.organization_users.first
+      
+      org_user.user = user2
+      org_user.email = user1.email
+
+      @organization.save
+      @organization.organization_users.first.user.should == user2
+    end
+
+    it 'should set error of user not found when not found' do
+      @organization.organization_users.first.email = 'notfound@example.com'
+      @organization.should_not be_valid
+    end
+  end
+
+  describe 'cleanup_roles' do
+    it 'should remove blanks from roles' do
+      organization = FactoryGirl.create( :organization_with_user )
+
+      organization.organization_users.first.roles = [ 'Admin', '' ]
+      organization.save
+
+      organization.organization_users.first.roles.should =~ [ 'Admin' ]
+    end
+  end
 end
