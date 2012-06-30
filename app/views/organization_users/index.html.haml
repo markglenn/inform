@@ -1,0 +1,18 @@
+%h1= @organization.name
+
+- unless @organization.description.blank?
+  .row= @organization.description
+
+%table.table.table-striped
+  %tr
+    %th Email Address
+    %th Roles
+    %th
+
+  - @organization.organization_users.each do |u|
+    %tr
+      %td= u.user.email
+      %td= u.roles.blank? ? '' : u.roles.join(', ')
+      %td
+
+

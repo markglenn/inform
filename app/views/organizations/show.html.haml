@@ -1,6 +1,7 @@
 %p#notice= notice
 
-%h1= @organization.name
+.page-header
+  %h1= @organization.name
 
 - unless @organization.description.blank?
   .row= @organization.description
@@ -11,12 +12,17 @@
   %tr
     %th Email Address
     %th Roles
+    %th
 
   - @organization.organization_users.each do |u|
     %tr
       %td= u.user.email
       %td= u.roles.blank? ? '' : u.roles.join(', ')
+      %td
+        = link_to 'Edit', edit_organization_organization_user_path(@organization, u), class: 'btn btn-small'
+        = link_to 'Delete', [@organization, u], :confirm => 'Are you sure?', :method => :delete, class: 'btn btn-small btn-danger'
 
-= link_to 'Edit', edit_organization_path(@organization)
-\|
-= link_to 'Back', organizations_path
+.btn-group
+  = link_to 'Add New User', new_organization_organization_user_path( @organization ), class: 'btn btn-primary'
+  = link_to 'Edit Organization', edit_organization_path(@organization), class: 'btn'
+  = link_to 'Back', organizations_path, class: 'btn'

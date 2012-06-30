@@ -14,11 +14,10 @@
         .container
           = link_to 'Inform', root_path, class: 'brand'
 
-          .nav-collapse
-            %ul.nav
-              %li= link_to 'Home', root_path
-              %li= link_to 'Sites', sites_path
-              %li= link_to 'Organization', organizations_path
+          %ul.nav
+            %li= link_to 'Home', root_path
+            %li= link_to 'Sites', sites_path
+            %li= link_to 'Organization', organizations_path
 
     .container
       = yield

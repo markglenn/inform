@@ -135,13 +135,13 @@ describe OrganizationsController do
 
       it "assigns the requested organization as @organization" do
         organization = Organization.create! valid_attributes
-        put :update, {:id => organization.to_param, :organization => valid_attributes}
+        put :update, {:id => organization.to_param, :organization => { name: 'New Name' } }
         assigns(:organization).should eq(organization)
       end
 
       it "redirects to the organization" do
         organization = Organization.create! valid_attributes
-        put :update, {:id => organization.to_param, :organization => valid_attributes}
+        put :update, {:id => organization.to_param, :organization => { name: 'New Name' } }
         response.should redirect_to(organization)
       end
     end
