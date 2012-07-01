@@ -15,7 +15,7 @@ class OrganizationsController < ApplicationController
   # GET /organizations/new
   def new
     @organization = Organization.new
-    @organization.organization_users = [ OrganizationUser.new( user: current_user ) ]
+    @organization.organization_users.build( user: current_user )
 
     respond_with @organization
   end
@@ -28,6 +28,9 @@ class OrganizationsController < ApplicationController
   # POST /organizations
   def create
     @organization = Organization.new(params[:organization])
+
+    # Make the current user an admin
+    @organization.organization_users.build( user: current_user, roles: [ 'Admin' ] )
 
     if @organization.save
       flash[ :notice ] = 'Organization was successfully created.'

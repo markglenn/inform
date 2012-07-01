@@ -101,6 +101,11 @@ describe OrganizationsController do
         post :create, {:organization => valid_attributes}
         response.should redirect_to(Organization.last)
       end
+
+      it 'assigns current user as admin to organization' do
+        post :create, { organization: valid_attributes }
+        assigns( :organization ).roles_for_user( @user ).should =~ [ 'Admin' ]
+      end
     end
 
     describe "with invalid params" do
