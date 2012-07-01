@@ -30,7 +30,7 @@ gem 'simple_form'
 
 group :test, :development do
   gem 'rspec-rails'
-  gem 'factory_girl_rails', require: false
+  gem 'factory_girl_rails', :require => false
   gem 'pry-rails'
   gem 'awesome_print'
   gem 'guard-pow'
