@@ -21,6 +21,10 @@ class Organization
   # Returns roles for a particular user
   def roles_for_user( user )
     organization_users_for_user = organization_users.select{|ou| ou.user_id == user.id }
-    organization_users_for_user.map{|ou| ou.roles}.flatten if organization_users_for_user.any?
+    if organization_users_for_user.any?
+      organization_users_for_user.map{|ou| ou.roles}.flatten
+    else
+      nil
+    end
   end
 end

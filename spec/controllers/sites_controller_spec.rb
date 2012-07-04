@@ -48,7 +48,8 @@ describe SitesController do
     end
 
     it 'should redirect to login for non logged in user' do
-      get :edit, { :id => 1 }
+      site = FactoryGirl.create( :site )
+      get :edit, { :id => site.to_param }
       response.should redirect_to new_user_session_path
     end
   end

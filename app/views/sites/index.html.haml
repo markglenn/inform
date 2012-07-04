@@ -22,6 +22,7 @@
     %tr
       %td= link_to site.title, site
 
-= link_to new_site_path, class: 'btn' do
-  %i.icon-plus
-  New Site
+- if can? :create, Site
+  = link_to new_site_path, class: 'btn' do
+    %i.icon-plus
+    New Site

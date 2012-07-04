@@ -5,6 +5,7 @@ describe OrganizationsController do
 
   before :each do
     @user = FactoryGirl.create( :user )
+    @organization_user = FactoryGirl.build( :organization_user, user: @user, roles: [ 'Admin' ] )
     sign_in @user
   end
 
@@ -12,7 +13,6 @@ describe OrganizationsController do
   # Organization. As you add validations to Organization, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    @organization_user = FactoryGirl.build( :organization_user, user: @user )
     FactoryGirl.attributes_for( :organization, organization_users: [ @organization_user ] )
   end
   
@@ -51,7 +51,7 @@ describe OrganizationsController do
 
       lambda {
         get :show, id: organization.to_param
-      }.should raise_error( Mongoid::Errors::DocumentNotFound )
+      }.should raise_error( CanCan::AccessDenied )
     end
   end
 
@@ -59,12 +59,6 @@ describe OrganizationsController do
     it "assigns a new organization as @organization" do
       get :new, {}
       assigns(:organization).should be_a_new(Organization)
-    end
-
-    it 'sets organization creator' do
-      get :new, {}
-      organization = assigns( :organization )
-      organization.organization_users.first.user.should == @user
     end
   end
 
@@ -75,11 +69,11 @@ describe OrganizationsController do
       assigns(:organization).should eq(organization)
     end
 
-    it 'should raise 404 if not user of organization' do
+    it 'should raise 403 if not user of organization' do
       organization = FactoryGirl.create( :organization )
       lambda {
         get :edit, {:id => organization.to_param}
-      }.should raise_error( Mongoid::Errors::DocumentNotFound )
+      }.should raise_error( CanCan::AccessDenied )
     end
   end
 
@@ -169,11 +163,21 @@ describe OrganizationsController do
       end
     end
 
-    it 'should raise 404 when not a part of organization' do
+    it 'should raise 403 when not a part of organization' do
       organization = FactoryGirl.create( :organization )
       expect {
         put :update, { id: organization.to_param, organization: { }}
-      }.should raise_error( Mongoid::Errors::DocumentNotFound )
+      }.should raise_error( CanCan::AccessDenied )
+    end
+
+    it 'should raise 403 when not an admin for organization' do
+      organization = Organization.create! valid_attributes
+      @organization_user.roles = []
+      organization.save!
+
+      expect {
+        put :update, { id: organization.to_param, organization: { }}
+      }.should raise_error( CanCan::AccessDenied )
     end
   end
 
@@ -191,11 +195,11 @@ describe OrganizationsController do
       response.should redirect_to(organizations_url)
     end
 
-    it 'should raise 404 when user not a part of organization' do
+    it 'should raise 403 when user not a part of organization' do
       organization = FactoryGirl.create( :organization )
       expect {
         delete :destroy, {:id => organization.to_param}
-      }.should raise_error( Mongoid::Errors::DocumentNotFound )
+      }.should raise_error( CanCan::AccessDenied )
 
     end
   end
