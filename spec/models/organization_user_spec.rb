@@ -18,7 +18,7 @@ describe OrganizationUser do
 
   describe 'email' do
     before :each do
-      @organization = FactoryGirl.create( :organization_with_user )
+      @organization = FactoryGirl.create( :organization, :with_user )
     end
 
     it 'should set email on initialize' do
@@ -55,7 +55,7 @@ describe OrganizationUser do
 
   describe 'cleanup_roles' do
     it 'should remove blanks from roles' do
-      organization = FactoryGirl.create( :organization_with_user )
+      organization = FactoryGirl.create( :organization, :with_user )
 
       organization.organization_users.first.roles = [ 'Administrator', '' ]
       organization.save

@@ -3,18 +3,22 @@
 FactoryGirl.define do
   factory :organization do
     sequence( :name ) { |n| "Organization #{n}" }
-    description "MyText"
-    
-    factory :organization_with_user do
-      ignore do
-        user { FactoryGirl.create( :user ) }
-        roles []
-      end
+    description "Example Description"
+  end
 
-      after( :create ) do |organization, evaluator|
-        organization.organization_users = FactoryGirl.build_list( :organization_user, 1, user: evaluator.user, roles: evaluator.roles )
-        organization.save!
-      end
+  trait :with_user do
+    ignore do
+      user { FactoryGirl.create( :user ) }
+      roles []
+    end
+
+    after( :create ) do |organization, evaluator|
+      organization.organization_users = FactoryGirl.build_list( :organization_user, 1, user: evaluator.user, roles: evaluator.roles )
+      organization.save!
+    end
+
+    after( :build ) do |organization, evaluator|
+      organization.organization_users = FactoryGirl.build_list( :organization_user, 1, user: evaluator.user, roles: evaluator.roles )
     end
   end
 

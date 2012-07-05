@@ -23,6 +23,7 @@ class Ability
       end
     end
 
+    # Everyone can read sites
     can [:read], Site
 
     # Define abilities for the passed in user here. For example:

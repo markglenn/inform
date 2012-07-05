@@ -10,7 +10,7 @@ describe OrganizationUsersController do
 
   describe 'GET index' do
     before :each do
-      @organization = FactoryGirl.create( :organization_with_user )
+      @organization = FactoryGirl.create( :organization, :with_user )
     end
 
     it 'should set organization' do
@@ -46,7 +46,7 @@ describe OrganizationUsersController do
     describe 'with valid attributes' do
 
       before :each do
-        @organization = FactoryGirl.create( :organization_with_user )
+        @organization = FactoryGirl.create( :organization, :with_user )
         @organization_user = @organization.organization_users.first
       end
 
@@ -144,7 +144,7 @@ describe OrganizationUsersController do
 
   describe "DELETE destroy" do
     it "destroys the requested organization" do
-      organization = FactoryGirl.create( :organization_with_user )
+      organization = FactoryGirl.create( :organization, :with_user )
       delete :destroy, organization_id: organization.to_param, id: organization.organization_users.first.to_param
 
       organization.reload
@@ -152,7 +152,7 @@ describe OrganizationUsersController do
     end
 
     it "redirects to the organization show page" do
-      organization = FactoryGirl.create( :organization_with_user )
+      organization = FactoryGirl.create( :organization, :with_user )
       delete :destroy, organization_id: organization.to_param, id: organization.organization_users.first.to_param
       response.should redirect_to(organization)
     end
