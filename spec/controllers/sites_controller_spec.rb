@@ -3,16 +3,19 @@ require 'spec_helper'
 describe SitesController do
   include Devise::TestHelpers
 
+  let( :organization ) { FactoryGirl.create( :organization ) }
+  let( :site ) { FactoryGirl.create( :site ) }
+  let( :user ) { FactoryGirl.create( :user ) }
+
   # This should return the minimal set of attributes required to create a valid
   # Site. As you add validations to Site, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    FactoryGirl.attributes_for( :site )
+    FactoryGirl.attributes_for( :site, organization_id: organization.to_param )
   end
   
   describe "GET index" do
     it "assigns all sites as @sites" do
-      site = Site.create! valid_attributes
       get :index, {}
       assigns(:sites).should eq([site])
     end
@@ -20,7 +23,6 @@ describe SitesController do
 
   describe "GET show" do
     it "assigns the requested site as @site" do
-      site = Site.create! valid_attributes
       get :show, {:id => site.to_param}
       assigns(:site).should eq(site)
     end
@@ -33,7 +35,7 @@ describe SitesController do
     end
 
     it "assigns a new site as @site" do
-      sign_in FactoryGirl.create( :user )
+      sign_in user
       get :new, {}
       assigns(:site).should be_a_new(Site)
     end
@@ -41,14 +43,12 @@ describe SitesController do
 
   describe "GET edit" do
     it "assigns the requested site as @site" do
-      sign_in FactoryGirl.create( :user )
-      site = Site.create! valid_attributes
+      sign_in user
       get :edit, {:id => site.to_param}
       assigns(:site).should eq(site)
     end
 
     it 'should redirect to login for non logged in user' do
-      site = FactoryGirl.create( :site )
       get :edit, { :id => site.to_param }
       response.should redirect_to new_user_session_path
     end
@@ -56,7 +56,7 @@ describe SitesController do
 
   describe "POST create" do
     before :each do
-      sign_in FactoryGirl.create( :user )
+      sign_in user
     end
 
     it 'should redirect to login for non logged in user' do
@@ -103,19 +103,17 @@ describe SitesController do
 
   describe "PUT update" do
     before :each do
-      sign_in FactoryGirl.create( :user )
+      sign_in user
     end
 
     it 'should redirect to login for non logged in user' do
       sign_out :user
-      site = Site.create! valid_attributes
       put :update, {:id => site.to_param, :site => {'these' => 'params'}}
       response.should redirect_to new_user_session_path
     end
 
     describe "with valid params" do
       it "updates the requested site" do
-        site = Site.create! valid_attributes
         # Assuming there are no other sites in the database, this
         # specifies that the Site created on the previous line
         # receives the :update_attributes message with whatever params are
@@ -125,13 +123,11 @@ describe SitesController do
       end
 
       it "assigns the requested site as @site" do
-        site = Site.create! valid_attributes
         put :update, {:id => site.to_param, :site => valid_attributes}
         assigns(:site).should eq(site)
       end
 
       it "redirects to the site" do
-        site = Site.create! valid_attributes
         put :update, {:id => site.to_param, :site => valid_attributes}
         response.should redirect_to(site)
       end
@@ -139,7 +135,6 @@ describe SitesController do
 
     describe "with invalid params" do
       it "assigns the site as @site" do
-        site = Site.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         parameters = FactoryGirl.attributes_for( :site, title: nil )
         put :update, {:id => site.to_param, :site => parameters}
@@ -147,7 +142,6 @@ describe SitesController do
       end
 
       it "re-renders the 'edit' template" do
-        site = Site.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         parameters = FactoryGirl.attributes_for( :site, title: nil )
         put :update, {:id => site.to_param, :site => parameters}
@@ -158,25 +152,21 @@ describe SitesController do
 
   describe "DELETE destroy" do
     before :each do
-      sign_in FactoryGirl.create( :user )
+      sign_in user
     end
 
     it 'should redirect on user not logged in' do
-      site = Site.create! valid_attributes
       sign_out :user
-      delete :destroy, { :id => site.to_param }
+      delete :destroy, id: site.to_param
     end
 
     it "destroys the requested site" do
-      site = Site.create! valid_attributes
-      expect {
-        delete :destroy, {:id => site.to_param}
-      }.to change(Site, :count).by(-1)
+      delete :destroy, id: site.to_param
+      Site.count.should == 0
     end
 
     it "redirects to the sites list" do
-      site = Site.create! valid_attributes
-      delete :destroy, {:id => site.to_param}
+      delete :destroy, id: site.to_param
       response.should redirect_to(sites_url)
     end
   end

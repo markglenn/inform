@@ -3,6 +3,7 @@
 FactoryGirl.define do
   factory :site do
     sequence( :title ){|n| "Site Title #{n}" }
+    organization
     latitude 0
     longitude 0
     

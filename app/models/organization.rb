@@ -2,6 +2,7 @@ class Organization
   include Mongoid::Document
 
   embeds_many :organization_users
+  has_many :sites
 
   field :name,        type: String
   field :description, type: String

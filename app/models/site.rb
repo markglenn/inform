@@ -4,15 +4,18 @@ class Site
   attr_accessor :latitude
   attr_accessor :longitude
 
+  belongs_to :organization
+
   field :title, type: String
   field :description, type: String
   field :location, type: Array
 
   index [[ :location, Mongo::GEO2D ]]
 
-  validates :title, presence: true
-  validates :latitude, presence: true
-  validates :longitude, presence: true
+  validates :title,         presence: true
+  validates :latitude,      presence: true
+  validates :longitude,     presence: true
+  validates :organization,  presence: true
 
   set_callback(:validation, :before) do |document|
     document.location = [ document.longitude.to_f, document.latitude.to_f ]
