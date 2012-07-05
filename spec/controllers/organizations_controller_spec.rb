@@ -5,7 +5,7 @@ describe OrganizationsController do
 
   before :each do
     @user = FactoryGirl.create( :user )
-    @organization_user = FactoryGirl.build( :organization_user, user: @user, roles: [ 'Admin' ] )
+    @organization_user = FactoryGirl.build( :organization_user, user: @user, roles: [ 'Administrator' ] )
     sign_in @user
   end
 
@@ -98,7 +98,7 @@ describe OrganizationsController do
 
       it 'assigns current user as admin to organization' do
         post :create, { organization: valid_attributes }
-        assigns( :organization ).roles_for_user( @user ).should =~ [ 'Admin' ]
+        assigns( :organization ).roles_for_user( @user ).should =~ [ 'Administrator' ]
       end
     end
 

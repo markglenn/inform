@@ -57,10 +57,10 @@ describe OrganizationUser do
     it 'should remove blanks from roles' do
       organization = FactoryGirl.create( :organization_with_user )
 
-      organization.organization_users.first.roles = [ 'Admin', '' ]
+      organization.organization_users.first.roles = [ 'Administrator', '' ]
       organization.save
 
-      organization.organization_users.first.roles.should =~ [ 'Admin' ]
+      organization.organization_users.first.roles.should =~ [ 'Administrator' ]
     end
   end
 end

@@ -17,7 +17,8 @@
           %ul.nav
             %li= link_to 'Home', root_path
             %li= link_to 'Sites', sites_path
-            %li= link_to 'Organization', organizations_path
+            - if user_signed_in?
+              %li= link_to 'Organization', organizations_path
 
           %ul.pull-right.nav
             - if user_signed_in?

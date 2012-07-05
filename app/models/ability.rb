@@ -10,7 +10,7 @@ class Ability
       end
 
       can [:update, :destroy], Organization, Organization.for_user( user ) do |organization|
-        ( organization.roles_for_user( user ) || [] ).include? 'Admin'
+        ( organization.roles_for_user( user ) || [] ).include? 'Administrator'
       end
 
       can :create, Organization do
