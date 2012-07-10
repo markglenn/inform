@@ -17,6 +17,15 @@ class Ability
         !user.new_record?
       end
 
+      # Organization users
+      can [:read], OrganizationUser do |organization_user|
+        organization_user.organization.roles_for_user( user ) != nil
+      end
+
+      can [:create, :update, :destroy], OrganizationUser do |organization_user|
+        ( organization_user.organization.roles_for_user( user ) || [] ).include? 'Administrator'
+      end
+
       # Sites
       can [:create, :update, :destroy], Site do |site|
         !user.new_record?

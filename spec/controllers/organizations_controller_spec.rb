@@ -3,17 +3,18 @@ require 'spec_helper'
 describe OrganizationsController do
   include Devise::TestHelpers
 
+  let( :user ){ FactoryGirl.create( :user ) }
+  let( :organization_user ){ FactoryGirl.build( :organization_user, user: user, roles: [ 'Administrator' ] ) }
+
   before :each do
-    @user = FactoryGirl.create( :user )
-    @organization_user = FactoryGirl.build( :organization_user, user: @user, roles: [ 'Administrator' ] )
-    sign_in @user
+    sign_in user
   end
 
   # This should return the minimal set of attributes required to create a valid
   # Organization. As you add validations to Organization, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    FactoryGirl.attributes_for( :organization, organization_users: [ @organization_user ] )
+    FactoryGirl.attributes_for( :organization, organization_users: [ organization_user ] )
   end
   
   describe "GET index" do
@@ -31,7 +32,7 @@ describe OrganizationsController do
 
     it 'should get organizations that contain user in non-first position' do
       organization = FactoryGirl.build( :organization )
-      organization.organization_users << OrganizationUser.new( user: @user )
+      organization.organization_users << OrganizationUser.new( user: user )
       organization.save
 
       get :index, {}
@@ -98,7 +99,7 @@ describe OrganizationsController do
 
       it 'assigns current user as admin to organization' do
         post :create, { organization: valid_attributes }
-        assigns( :organization ).roles_for_user( @user ).should =~ [ 'Administrator' ]
+        assigns( :organization ).roles_for_user( user ).should =~ [ 'Administrator' ]
       end
     end
 
@@ -171,8 +172,8 @@ describe OrganizationsController do
     end
 
     it 'should raise 403 when not an admin for organization' do
-      organization = Organization.create! valid_attributes
-      @organization_user.roles = []
+      organization = FactoryGirl.create( :organization )
+      organization.organization_users.create( user: user, roles: [] )
       organization.save!
 
       expect {

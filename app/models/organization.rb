@@ -9,6 +9,7 @@ class Organization
 
   validates :name, presence: true, uniqueness: true
   validates :description, length: { within: 0 .. 3000 }
+  validate :must_have_admin
 
   index "organization_users.user_id"
   index :name
@@ -26,6 +27,14 @@ class Organization
       organization_users_for_user.map{|ou| ou.roles}.flatten
     else
       nil
+    end
+  end
+
+  private
+
+  def must_have_admin
+    unless organization_users.any?{ |ou| ou.roles.include? 'Administrator' }
+      errors.add( :base, "Organization must have at least one administrator" ) 
     end
   end
 end

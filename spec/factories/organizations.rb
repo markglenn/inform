@@ -4,12 +4,10 @@ FactoryGirl.define do
   factory :organization do
     sequence( :name ) { |n| "Organization #{n}" }
     description "Example Description"
-  end
 
-  trait :with_user do
     ignore do
       user { FactoryGirl.create( :user ) }
-      roles []
+      roles ['Administrator']
     end
 
     after( :create ) do |organization, evaluator|
@@ -21,5 +19,4 @@ FactoryGirl.define do
       organization.organization_users = FactoryGirl.build_list( :organization_user, 1, user: evaluator.user, roles: evaluator.roles )
     end
   end
-
 end

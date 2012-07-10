@@ -21,7 +21,7 @@ describe User do
   describe 'organizations' do
     it 'should link to association organizations' do
       user = FactoryGirl.create( :user )
-      organization = FactoryGirl.create( :organization, organization_users: [ FactoryGirl.build( :organization_user, user: user ) ] )
+      organization = FactoryGirl.create( :organization, user: user )
 
       user.organizations.to_a.should =~ [ organization ]
     end

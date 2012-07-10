@@ -10,7 +10,7 @@ describe OrganizationUsersController do
 
   describe 'GET index' do
     before :each do
-      @organization = FactoryGirl.create( :organization, :with_user )
+      @organization = FactoryGirl.create( :organization )
     end
 
     it 'should set organization' do
@@ -20,62 +20,71 @@ describe OrganizationUsersController do
   end
 
   describe 'GET edit' do
-    before :each do
-      @user = FactoryGirl.create( :user )
-      @ou = FactoryGirl.build( :organization_user, user: @user )
-      @organization = FactoryGirl.create( :organization, organization_users: [ @ou ] )
-    end
+
+    let( :user ){ FactoryGirl.create( :user ) }
+    let( :organization ){ FactoryGirl.create( :organization, user: user ) }
+    let( :organization_user ){ organization.organization_users.first }
 
     it 'edit set organization' do
-      get :edit, organization_id: @organization.to_param, id: @ou.to_param
-      assigns( :organization ).should == @organization
+      get :edit, organization_id: organization.to_param, id: organization_user.to_param
+      assigns( :organization ).should == organization
     end
 
     it 'edit set organization_user' do
-      get :edit, organization_id: @organization.to_param, id: @ou.to_param
-      assigns( :organization_user ).should == @ou
+      get :edit, organization_id: organization.to_param, id: organization_user.to_param
+      assigns( :organization_user ).should == organization_user
     end
 
     it 'should set organization_user_view_model' do
-      get :edit, organization_id: @organization.to_param, id: @ou.to_param
-      assigns( :organization_user ).email.should == @user.email
+      get :edit, organization_id: organization.to_param, id: organization_user.to_param
+      assigns( :organization_user ).email.should == user.email
     end
   end
 
   describe 'PUT update' do
     describe 'with valid attributes' do
 
-      before :each do
-        @organization = FactoryGirl.create( :organization, :with_user )
-        @organization_user = @organization.organization_users.first
-      end
+      let( :organization ){ FactoryGirl.create( :organization ) }
+      let( :organization_user ){ organization.organization_users.first }
 
       it 'updates the requested organization' do
         new_user = FactoryGirl.create( :user )
-        put :update, { organization_id: @organization.to_param, id: @organization_user.to_param, organization_user: { email: new_user.email } }
+        put :update, { organization_id: organization.to_param, id: organization_user.to_param, organization_user: { email: new_user.email } }
 
-        @organization.reload
-        @organization.organization_users.first.user.should == new_user
+        organization.reload
+        organization.organization_users.first.user.should == new_user
       end
 
       it 'should return error when user not found' do
-        put :update, { organization_id: @organization.to_param, id: @organization_user.to_param, organization_user: { email: 'bad-email@example.com' } }
+        put :update, { organization_id: organization.to_param, id: organization_user.to_param, organization_user: { email: 'bad-email@example.com' } }
         assigns( :organization_user ).errors.should_not be_empty
       end
 
       it 'should update roles for user' do
-        user = @organization_user.user
+        user = organization_user.user
 
         put :update, { 
-          organization_id: @organization.to_param, 
-          id: @organization_user.to_param, 
+          organization_id: organization.to_param, 
+          id: organization_user.to_param, 
           organization_user: { email: user.email, roles: [ 'Administrator', 'Editor' ] }
         }
 
-        @organization.reload
+        organization.reload
 
-        @organization.organization_users.first.roles.should =~ [ 'Administrator', 'Editor' ]
+        organization.organization_users.first.roles.should =~ [ 'Administrator', 'Editor' ]
         
+      end
+
+      it 'should not allow organization without admin' do
+        user = organization_user.user
+
+        put :update, { 
+          organization_id: organization.to_param, 
+          id: organization_user.to_param, 
+          organization_user: { email: user.email, roles: [ 'Editor' ] }
+        }
+
+        assigns( :organization ).errors.should_not be_empty
       end
     end
 
@@ -120,7 +129,7 @@ describe OrganizationUsersController do
 
       it "redirects to the created organization user" do
         post :create, organization_id: @organization.to_param, organization_user: @valid_attributes
-        response.should redirect_to([@organization, @organization.organization_users.last])
+        response.should redirect_to(@organization)
       end
     end
 
@@ -143,16 +152,27 @@ describe OrganizationUsersController do
   end
 
   describe "DELETE destroy" do
-    it "destroys the requested organization" do
-      organization = FactoryGirl.create( :organization, :with_user )
+    it "destroys the requested organization user" do
+      organization = FactoryGirl.create( :organization )
+      organization.organization_users << FactoryGirl.build( :organization_user, organization: organization )
+
+      delete :destroy, organization_id: organization.to_param, id: organization.organization_users.last.to_param
+
+      organization.reload
+      organization.organization_users.count.should == 1
+    end
+
+    it 'does not delete last admin' do
+      organization = FactoryGirl.create( :organization )
+
       delete :destroy, organization_id: organization.to_param, id: organization.organization_users.first.to_param
 
       organization.reload
-      organization.organization_users.should be_blank
+      organization.organization_users.count.should == 1
     end
 
     it "redirects to the organization show page" do
-      organization = FactoryGirl.create( :organization, :with_user )
+      organization = FactoryGirl.create( :organization )
       delete :destroy, organization_id: organization.to_param, id: organization.organization_users.first.to_param
       response.should redirect_to(organization)
     end

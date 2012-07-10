@@ -17,11 +17,13 @@ class OrganizationUsersController < ApplicationController
   end
 
   def update
-    if @organization_user.update_attributes( params[ :organization_user ] )
+    @organization_user.attributes = params[ :organization_user ]
+
+    if @organization.save
       flash[ :notice ] = 'Organization was successfully updated.'
       redirect_to @organization
     else
-      respond_with @organization_user
+      render action: 'edit'
     end
   end
 
@@ -40,7 +42,16 @@ class OrganizationUsersController < ApplicationController
   # DELETE /organizations/1
   def destroy
     @organization = Organization.find(params[:organization_id])
-    @organization.organization_users.where( _id: params[ :id ] ).destroy_all
+
+    # Find all admins
+    users = @organization.organization_users.select{|ou| ou.roles.include? 'Administrator' }
+
+    if users.length == 1 and users.first.to_param == params[ :id ] 
+      # Trying to delete the only admin
+      @organization.errors.add( :base, 'Cannot remove last admin' )
+    else
+      @organization.organization_users.where( _id: params[ :id ] ).destroy_all
+    end
 
     respond_with @organization
   end

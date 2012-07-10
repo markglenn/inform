@@ -2,27 +2,36 @@ require 'spec_helper'
 
 describe Organization do
   describe 'validations' do
-    before :each do
-      @organization = FactoryGirl.build( :organization )
-    end
+
+    let( :organization ){ FactoryGirl.build( :organization ) }
 
     it 'should be valid with valid attributes' do
-      @organization.should be_valid
+      organization.should be_valid
     end
 
     it 'should not be valid with missing name' do
-      @organization.name = nil
-      @organization.should_not be_valid
+      organization.name = nil
+      organization.should_not be_valid
     end
 
     it 'should not be valid with duplicate name' do
-      FactoryGirl.create( :organization, name: @organization.name )
-      @organization.should_not be_valid
+      FactoryGirl.create( :organization, name: organization.name )
+      organization.should_not be_valid
     end
 
     it 'should be invalid with description length > 3000' do
-      @organization.description = 'a' * 3001
-      @organization.should_not be_valid
+      organization.description = 'a' * 3001
+      organization.should_not be_valid
+    end
+
+    it 'should not be valid with no users' do
+      organization.organization_users = []
+      organization.should_not be_valid
+    end
+
+    it 'should not be valid with missing admin' do
+      organization.organization_users.first.roles = []
+      organization.should_not be_valid
     end
   end
 
@@ -37,7 +46,7 @@ describe Organization do
       @organization.organization_users << organization_user
       @organization.save
 
-      Organization.first.organization_users.should =~ [ organization_user ]
+      Organization.first.organization_users.should include organization_user
     end
   end
 
@@ -47,8 +56,7 @@ describe Organization do
     end
 
     it 'should return all organizations for a user' do
-      ou = FactoryGirl.build( :organization_user, user: @user )
-      organization = FactoryGirl.create( :organization, organization_users: [ ou ] )
+      organization = FactoryGirl.create( :organization, user: @user )
 
       Organization.for_user( @user ).to_a.should =~ [ organization ]
     end
@@ -60,8 +68,7 @@ describe Organization do
     end
 
     it 'should return organizations that have the user id' do
-      ou = FactoryGirl.build( :organization_user, user: @user )
-      organization = FactoryGirl.create( :organization, organization_users: [ ou ] )
+      organization = FactoryGirl.create( :organization, user: @user )
 
       Organization.for_user( @user.id.to_s ).to_a.should =~ [ organization ]
     end
@@ -74,12 +81,13 @@ describe Organization do
     end
 
     it 'should return roles for user for users with no roles' do
-      organization = FactoryGirl.create( :organization, :with_user, user: @user )
+      organization = FactoryGirl.create( :organization )
+      organization.organization_users.create( user: @user, roles: [] )
       organization.roles_for_user( @user ).should =~ []
     end
 
     it 'should return roles for user for users with roles' do
-      organization = FactoryGirl.create( :organization, :with_user, user: @user, roles: [ 'Administrator', 'User' ] )
+      organization = FactoryGirl.create( :organization, user: @user, roles: [ 'Administrator', 'User' ] )
       organization.roles_for_user( @user ).should =~ %w( Administrator User )
     end
 
